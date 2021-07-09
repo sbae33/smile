@@ -1,0 +1,163 @@
+﻿<!-- Suhee Bae (A01087265) Assignment #3 -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>MDIA 2294</title>
+	
+	<style>	    
+	    img {
+	        margin:5px;
+	    }
+	    
+	    img.clickable{
+	        cursor:pointer;
+	    }
+	
+	</style>
+	
+	<script>
+	// ---------- Suhee Bae (A01087265) - Assignment #3 -----------
+
+
+	// Create a global array of images to utilize for more than one function
+    var arrImage = ["first", "second", "third", "fourth", "fifth"];
+	
+	// *** Main function running onload of the page ***
+	// - Call function that builds the thumbnails 
+	// - Call function that set the main image (Give value of "0" to set the first image as the main loaded image) 
+	function firstLoad() {
+	    
+		createThumbs();     
+	    setMainImage(0);    
+	}
+
+	// *** Function that displays the main images ***
+	function setMainImage(numCurrIndex) {
+
+	    // Display the main image based on the passed parameter	    
+		document.getElementById("imgMain").src = "images/" + arrImage[numCurrIndex] + "Full.png";
+	    // Set the textbox value into the current index number 
+		document.getElementById("txtCurrIndex").value = numCurrIndex;
+
+	    // Call function that updates the thumbnails based on the current selection
+        updateThumbs(numCurrIndex);
+	}
+
+	// *** Function that builds the thumbnails ***
+	function createThumbs() {
+
+	    // Declare an empty variable for the thumbnail that would be built
+		var arrThumb = "";
+
+        // Loop through the global array and collect thumbnail images
+		for (let i=0; i<arrImage.length; i++){
+			
+			arrThumb += "<img src=\"images/" + arrImage[i] + "Thumb.png\" onclick=\"setMainImage(" + i + ");\" class=\"clickable\"/>" 
+		}
+
+        // Display the collected thumbnails on the page
+		document.getElementById("divThumbArea").innerHTML = arrThumb;
+	} 
+
+	// *** Function that updates thumbnails based on the selection ***
+	function updateThumbs(numCurrIndex) {
+	   
+		// Hold the thumbnail class attribute into the variable
+		var clickThumb = document.getElementsByClassName("clickable");
+		
+		// Loop through the thumbnails to change the opacity based on the selection
+		// - Make the opacity of the thumbnail into 100% if it's selected
+		// - Make the opacity of the thumbnail into 50% if it's not selected
+		for (let i=0; i<arrImage.length; i++){
+			
+			clickThumb.src = (i == numCurrIndex) ? clickThumb[i].style.opacity = "1.0" : clickThumb[i].style.opacity = "0.5";
+		}
+	}
+
+	// *** Function that navigate to the first image (index of 0) ***
+	function navFirst() {
+	
+		setMainImage(0);
+	}
+
+	// *** Function that navigate to the last image (index of 4) ***
+	function navLast() {
+	    
+		setMainImage(4);
+	}
+
+	// *** Function that navigate to the next image ***
+	function navNext() {
+	    
+        // Collect the value of the textbox that holds the current index number
+		var currIndex = parseInt(document.getElementById("txtCurrIndex").value);
+
+		// If the current position is at the very end, 
+		// - Set the next index value into 0 to go back to the beginning 
+		// Else (if the current index number is smaller than the last index number),
+		// - Set the next index value by adding 1 to the current position index number 
+		var nextIndex = (currIndex >= arrImage.length - 1) ? 0 : currIndex + 1;
+		
+		// Display the next main image on the page
+		document.getElementById("imgMain").src = "images/" + arrImage[nextIndex] + "Full.png";
+
+		setMainImage(nextIndex);
+	}
+
+	function navPrev() {
+	    
+		// Collect the value of the textbox that holds the current index number
+		var currIndex = parseInt(document.getElementById("txtCurrIndex").value);
+
+		// If the current position is at the very front,
+		// - Set the prev index value into 4 to go to the ending
+		// Else (if the current index number is bigger than the last index number),
+		// - Set the prev index value by subtracting 1 to the current position index number
+		var prevIndex = (currIndex == 0) ? 4 : currIndex - 1;
+		
+		// Dislay the previous main image on the page
+		document.getElementById("imgMain").src = "images/" + arrImage[prevIndex] + "Full.png";
+		
+		setMainImage(prevIndex);
+	}	
+
+    </script>
+</head>
+<body onload="firstLoad();">
+
+	<h1>MDIA 2294: Assignment 3 - Hope This Makes You Smile ♥ </h1>
+	
+	<div style="text-align:center;">
+	    <table>
+	        <tr>
+	            <td></td>
+	            <td style="text-align:center;">
+                    <div><img id="imgMain" alt="Main Image" /></div>
+
+                    <!-- Swtich the visibility to utilize textbox & see index number -->
+                    <div style="visibility:hidden;"><input id="txtCurrIndex" /></div>    
+                </td>
+	            <td></td>
+	        
+	        </tr>
+	        <tr>
+	            <td>
+	                <img src="images/First.png" onclick="navFirst();" />            
+	                <img src="images/Prev.png" onclick="navPrev();" />
+	            </td>
+	            <td>
+	                <div id="divThumbArea"></div>	        
+	            </td>
+	            <td>
+	                <img src="images/Next.png" onclick="navNext();" />            
+	                <img src="images/Last.png" onclick="navLast();" />
+	            </td>
+	        </tr>	    
+	    </table>       
+	</div>
+    
+	
+	
+</body>
+</html>
